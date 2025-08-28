@@ -33,7 +33,8 @@ public class Arrays{
     */
     public static void main(String[] args){
         String a = "hi";
-        Strin b = "hello";
+
+
 
         System.out.println("a == b? " + a.equals(b));
         System.out.println("How do they compare?");
