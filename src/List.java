@@ -29,14 +29,18 @@ public class List<Type>{
     }
     // navigates to the beginning of the list
     public void First() {
-        this.curr.setLink(this.head.getLink());
-
+        {
+            if (head != null) {
+                curr = head; // just move current to the head
+            }
+        }
     }
     // navigates to the end of the list
 // the end of the list is at the last valid item in the list
-    public void Last()
-    {
-        this.curr.setLink(this.tail.getLink());
+    public void Last() {
+        if (tail != null) {
+            curr = tail; // point to the last node
+        }
     }
     // navigates to the specified element (0-index)
 // this should not be possible for an empty list
@@ -54,17 +58,23 @@ public class List<Type>{
     // navigates to the previous element
 // this should not be possible for an empty list
 // there should be no wrap-around
-    public void Prev()
-    {
+    public void Prev() {
+        if (curr == null || curr == head) {
+            return;
+        }
 
+        Node<Type> temp = head;
+        while (temp.getLink() != curr) {
+            temp = temp.getLink();
+        }
+        curr = temp;
     }
     // navigates to the next element
 // this should not be possible for an empty list
 // there should be no wrap-around
-    public void Next()
-    {
+    public void Next() {
         if (curr != null && curr.getLink() != null) {
-            this.curr = this.curr.getLink();
+            curr = curr.getLink(); // move forward
         }
     }
     // returns the location of the current element (or -1)
@@ -73,10 +83,8 @@ public class List<Type>{
         if (head == null || curr == null) {
             return -1;
         }
-
         Node<Type> temp = head;
         int pos = 0;
-
         while (temp != null) {
             if (temp == curr) {
                 return pos;
@@ -89,22 +97,16 @@ public class List<Type>{
     }
 
     // returns the value of the current element (or -1)
-    public Type GetValue()
-    {
+    public Type GetValue() {
+        if (curr == null) {
+            return null;
+        }
+        return curr.getData();
     }
     // returns the size of the list
 // size does not imply capacity
-    public int GetSize()
-    {
-        for(int i = 0; ;i++){
-            if(this.curr.setLink() == this.tail.setLink()) {
-                return i;
-            }
-            else{
-                this.curr.setlink
-            }
-
-        }
+    public int GetSize() {
+        return num_items;
     }
     // inserts an item before the current element
 // the new element becomes the current
@@ -115,28 +117,8 @@ public class List<Type>{
     // inserts an item after the current element
 // the new element becomes the current
 // this should not be possible for a full list
-    public void InsertAfter(Type data)
-    { if (num_items >= MAX_SIZE) {
-        System.out.println("List is full!");
-        return;
-    }
+    public void InsertAfter(Type data) {
 
-        Node<Type> newNode = new Node<Type>();
-        newNode.setData(data);
-
-        // empty list case
-        if (head == null) {
-            head = tail = curr = newNode;
-        } else {
-            newNode.setLink(curr.getLink());  // new node points where curr was pointing
-            curr.setLink(newNode);            // curr now points to new node
-            curr = newNode;                   // move curr to new node
-            if (newNode.getLink() == null) {  // if we inserted at the end
-                tail = newNode;
-            }
-        }
-
-        num_items++;
     }
 
     // removes the current element
@@ -173,18 +155,6 @@ public class List<Type>{
     // returns a string representation of the entire list (e.g., 1 2 3 4 5)
 // the string "NULL" should be returned for an empty list
     public String toString() {
-        if (this.head == null) {
-            return NULL;
-        }
-        else {
-            Node<Type> n = this.head;
-            String s = "";
-            while (n != null) {
-                s += n.getData() + " ";
-                n = n.getLink();
-            }
-            return s;
-        }
     }
     // replaces the value of the current element with the specified value
 // this should not be possible for an empty list
