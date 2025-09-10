@@ -30,7 +30,7 @@ public class Arrays{
         String t = new String("hi");
         String s = t + 7
     }
-    */
+
     public static void main(String[] args){
         String a = "hi";
 
@@ -39,5 +39,8 @@ public class Arrays{
         System.out.println("a == b? " + a.equals(b));
         System.out.println("How do they compare?");
         System.out.println(a.compareTo(b));
+
+
     }
+     */
 }

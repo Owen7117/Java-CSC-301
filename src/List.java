@@ -1,64 +1,64 @@
 import java.util.*;
 
-public class List<Type>{
+public class List<Type> {
     // We don't actually have to set a max size with linked lists
 // But it is a good idea.
 // Just picture an infinite loop adding to the list! :O
-    public static final int MAX_SIZE = 50;
+    public static final int MAX_SIZE = 1000;
     private Node<Type> head;
     private Node<Type> tail;
     private Node<Type> curr;
     private int num_items;
+
     // constructor
 // remember that an empty list has a "size" of -1 and its "position" is at -1
-    public List()
-    {
+    public List() {
         head = null;
         tail = null;
-        curr= null;
-        num_items=0;
+        curr = null;
+        num_items = 0;
     }
+
     // copy constructor
 // clones the list l and sets the last element as the current
-    public List(List<Type> l)
-    {
+    public List(List<Type> l) {
         Node<Type> n = l.head;
         this.head = this.tail = this.curr = null;
         this.num_items = 0;
-        while (n != null)
-        {
+        while (n != null) {
             this.InsertAfter(n.getData());
             n = n.getLink();
         }
     }
+
     // navigates to the beginning of the list
     public void First() {
-        {
-            if (head != null) {
-                curr = head;
-            }
+        if (head != null) {
+            curr = head;
         }
     }
+
     // navigates to the end of the list
 // the end of the list is at the last valid item in the list
     public void Last() {
         if (tail != null) {
-            curr = tail; // point to the last node
+            curr = tail;
         }
     }
+
     // navigates to the specified element (0-index)
 // this should not be possible for an empty list
 // this should not be possible for invalid positions
-    public void SetPos(int pos)
-    {
-        if (pos < 0 || pos >= this.num_items || this.head == null) {
+    public void SetPos(int pos) {
+        if (pos < 0 || pos >= this.num_items || head == null) {
             return;
         }
-        this.curr = this.head;
-        for(int i = 0; i < pos; i++) {
-            this.curr = this.curr.getLink();
+        curr = head;
+        for (int i = 0; i < pos; i++) {
+            curr = curr.getLink();
         }
     }
+
     // navigates to the previous element
 // this should not be possible for an empty list
 // there should be no wrap-around
@@ -66,13 +66,13 @@ public class List<Type>{
         if (curr == null || curr == head) {
             return;
         }
-
         Node<Type> temp = head;
         while (temp.getLink() != curr) {
             temp = temp.getLink();
         }
         curr = temp;
     }
+
     // navigates to the next element
 // this should not be possible for an empty list
 // there should be no wrap-around
@@ -81,9 +81,10 @@ public class List<Type>{
             curr = curr.getLink(); // move forward
         }
     }
+
     // returns the location of the current element (or -1)
-    public int GetPos()
-    {
+    // I used chat.gpt to help me figure out the GetPos
+    public int GetPos() {
         if (head == null || curr == null) {
             return -1;
         }
@@ -97,7 +98,7 @@ public class List<Type>{
             pos++;
         }
 
-        return -1; // shouldn't happen if curr is valid
+        return -1;
     }
 
     // returns the value of the current element (or -1)
@@ -107,24 +108,41 @@ public class List<Type>{
         }
         return curr.getData();
     }
+
     // returns the size of the list
 // size does not imply capacity
     public int GetSize() {
-        return num_items;
+        return this.num_items;
     }
+
     // inserts an item before the current element
 // the new element becomes the current
 // this should not be possible for a full list
-    public void InsertBefore(Type data)
-    {
+    public void InsertAfter(Type data) {
+        if (num_items >= MAX_SIZE) {
+            System.out.println("List is full. Cannot insert.");
+            return;
+        }
+        Node<Type> newNode = new Node<>();
+        newNode.setData(data);
+        if (head == null) {
+            head = tail = curr = newNode;
+        } else {
+            newNode.setLink(curr.getLink()); // new node points to curr's next
+            curr.setLink(newNode);           // curr now points to new node
+            if (curr == tail) {              // update tail if we were at the end
+                tail = newNode;
+            }
+            curr = newNode;                  // new node becomes current
+        }
+
+        num_items++;
     }
+}
+/*
     // inserts an item after the current element
 // the new element becomes the current
 // this should not be possible for a full list
-    public void InsertAfter(Type data) {
-
-    }
-
     // removes the current element
 // this should not be possible for an empty list
     public void Remove()
@@ -138,7 +156,7 @@ public class List<Type>{
     // returns if the list is empty
     public boolean IsEmpty()
     {
-        return (this.head == null);
+        return (head == null);
     }
     // returns if the list is full
     public boolean IsFull()
@@ -158,24 +176,5 @@ public class List<Type>{
     }
     // returns a string representation of the entire list (e.g., 1 2 3 4 5)
 // the string "NULL" should be returned for an empty list
-    public String toString() {
-    }
-    // replaces the value of the current element with the specified value
-// this should not be possible for an empty list
-    public void Replace(Type data)
-    {
-    }
-    // returns if the list is empty
-    public boolean IsEmpty()
-    {
-    }
-    // returns if the list is full
-    public boolean IsFull()
-    {
-    }
-    // returns if two lists are equal (by value)
-    public boolean Equals(List<Type> l)
-    {
-    }
-// returns the concatenation of two lists{
-}
+*/
+
