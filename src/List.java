@@ -13,6 +13,10 @@ public class List<Type>{
 // remember that an empty list has a "size" of -1 and its "position" is at -1
     public List()
     {
+        head = null;
+        tail = null;
+        curr= null;
+        num_items=0;
     }
     // copy constructor
 // clones the list l and sets the last element as the current
@@ -31,7 +35,7 @@ public class List<Type>{
     public void First() {
         {
             if (head != null) {
-                curr = head; // just move current to the head
+                curr = head;
             }
         }
     }
