@@ -120,7 +120,7 @@ public class List<Type> {
 // this should not be possible for a full list
     public void InsertAfter(Type data) {
         if (num_items >= MAX_SIZE) {
-            System.out.println("List is full. Cannot insert.");
+            System.out.println("List is full");
             return;
         }
         Node<Type> newNode = new Node<>();
@@ -128,14 +128,13 @@ public class List<Type> {
         if (head == null) {
             head = tail = curr = newNode;
         } else {
-            newNode.setLink(curr.getLink()); // new node points to curr's next
-            curr.setLink(newNode);           // curr now points to new node
-            if (curr == tail) {              // update tail if we were at the end
+            newNode.setLink(curr.getLink());
+            curr.setLink(newNode);
+            if (curr == tail) {
                 tail = newNode;
             }
-            curr = newNode;                  // new node becomes current
+            curr = newNode;
         }
-
         num_items++;
     }
 }
