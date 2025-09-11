@@ -1,17 +1,13 @@
 import java.util.*;
 
 public class List<Type> {
-    // We don't actually have to set a max size with linked lists
-// But it is a good idea.
-// Just picture an infinite loop adding to the list! :O
+
     public static final int MAX_SIZE = 1000;
     private Node<Type> head;
     private Node<Type> tail;
     private Node<Type> curr;
     private int num_items;
 
-    // constructor
-// remember that an empty list has a "size" of -1 and its "position" is at -1
     public List() {
         head = null;
         tail = null;
@@ -19,8 +15,6 @@ public class List<Type> {
         num_items = 0;
     }
 
-    // copy constructor
-// clones the list l and sets the last element as the current
     public List(List<Type> l) {
         Node<Type> n = l.head;
         this.head = this.tail = this.curr = null;
@@ -31,24 +25,18 @@ public class List<Type> {
         }
     }
 
-    // navigates to the beginning of the list
     public void First() {
         if (head != null) {
             curr = head;
         }
     }
 
-    // navigates to the end of the list
-// the end of the list is at the last valid item in the list
     public void Last() {
         if (tail != null) {
             curr = tail;
         }
     }
 
-    // navigates to the specified element (0-index)
-// this should not be possible for an empty list
-// this should not be possible for invalid positions
     public void SetPos(int pos) {
         if (pos < 0 || pos >= this.num_items || head == null) {
             return;
@@ -58,10 +46,7 @@ public class List<Type> {
             curr = curr.getLink();
         }
     }
-
-    // navigates to the previous element
-// this should not be possible for an empty list
-// there should be no wrap-around
+    // I used chat.gpt to help me figure out how to create a new node and set them as temp nodes
     public void Prev() {
         if (curr == null || curr == head) {
             return;
@@ -73,17 +58,12 @@ public class List<Type> {
         curr = temp;
     }
 
-    // navigates to the next element
-// this should not be possible for an empty list
-// there should be no wrap-around
     public void Next() {
         if (curr != null && curr.getLink() != null) {
             curr = curr.getLink(); // move forward
         }
     }
-
-    // returns the location of the current element (or -1)
-    // I used chat.gpt to help me figure out the GetPos
+    // Chat.gpt helped me again setting temp nodes and traversing the list until you reach the current node
     public int GetPos() {
         if (head == null || curr == null) {
             return -1;
@@ -101,7 +81,6 @@ public class List<Type> {
         return -1;
     }
 
-    // returns the value of the current element (or -1)
     public Type GetValue() {
         if (curr == null) {
             return null;
@@ -109,15 +88,10 @@ public class List<Type> {
         return curr.getData();
     }
 
-    // returns the size of the list
-// size does not imply capacity
     public int GetSize() {
         return this.num_items;
     }
-
-    // inserts an item before the current element
-// the new element becomes the current
-// this should not be possible for a full list
+    // Chat.gpt helped me understand how to create a new node while putting in the new data and set the link between the current node and the newly created node
     public void InsertAfter(Type data) {
         if (num_items >= MAX_SIZE) {
             System.out.println("List is full");
@@ -138,6 +112,7 @@ public class List<Type> {
         num_items++;
     }
 }
+
 /*
     // inserts an item after the current element
 // the new element becomes the current
