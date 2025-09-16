@@ -4,14 +4,14 @@ import java.util.Scanner;
 
 public class Program1 {
      public static void main(String[] args) {
-
+         // Initialize the linked list
          List<Character> linkedlist = new List<>();
          try {
              File file = new File("prog1input1.txt");
              Scanner scanner = new Scanner(file);
              while (scanner.hasNextLine()) {
                  String line = scanner.nextLine();
-                 for(int i = 0; i < line.length(); i++) {
+                 for (int i = 0; i < line.length(); i++) {
                      char c = line.charAt(i);
                      linkedlist.InsertAfter(c);
                  }
@@ -21,8 +21,15 @@ public class Program1 {
              System.out.println("File not found: " + e.getMessage());
          }
          String pattern = "Ickle";
-         int size = linkedlist.GetSize();
          long startTimeBrute = System.currentTimeMillis();
+         BruteForce(linkedlist, pattern);
+         long endTimeBrute = System.currentTimeMillis();
+         System.out.println("Brute force took " + (endTimeBrute - startTimeBrute) + " milliseconds");
+         KMP(linkedlist, pattern);
+     }
+
+     private static void BruteForce(List<Character> linkedlist, String pattern) {
+         int size = linkedlist.GetSize();
          for (int i = 0; i <= size - pattern.length(); i++) {
              linkedlist.First();
              //set the head every time so you can get back to the right node after every check
@@ -40,12 +47,10 @@ public class Program1 {
                  linkedlist.Next();
                  k++;
              }
-             if(same){
+             if (same) {
                  System.out.println(i);
              }
          }
-         long endTimeBrute = System.currentTimeMillis();
-         System.out.println("Brute force took " + (endTimeBrute - startTimeBrute) + " milliseconds");
      }
 
     /*
@@ -53,7 +58,7 @@ public class Program1 {
     and suffix in the pattern. The length increases when characters match and regresses when there’s
     a mismatch, allowing us to check the same index again after falling back.
     */
-    private static int[] FailureFunction(pattern) {
+    private static int[] FailureFunction(String pattern) {
         // Create the failure function array
         int[] fail = new int[pattern.length()];
         // Set the first index to 0 since it the first comparison will always be 0
@@ -70,7 +75,7 @@ public class Program1 {
                 // And set the failure function array at index i to that length and then move on to the next index to compare
                 fail[i] = len;
             }
-            // If they dont match
+            // If they don't match
             else {
                 // And the length is not 0 (Chat.gpt helped understand this part)
                 if (len != 0) {
@@ -86,6 +91,9 @@ public class Program1 {
             }
         }
         return fail;
+    }
+    private static void KMP(List<Character> linkedlist, String pattern) {
+
     }
 }
 
