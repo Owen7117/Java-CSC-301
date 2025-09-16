@@ -20,10 +20,10 @@ public class Program1 {
          } catch (FileNotFoundException e) {
              System.out.println("File not found: " + e.getMessage());
          }
-         String word = "Ickle";
+         String pattern = "Ickle";
          int size = linkedlist.GetSize();
          long startTimeBrute = System.currentTimeMillis();
-         for (int i = 0; i <= size - word.length(); i++) {
+         for (int i = 0; i <= size - pattern.length(); i++) {
              linkedlist.First();
              //set the head every time so you can get back to the right node after every check
              for (int j = 0; j < i; j++) {
@@ -32,8 +32,8 @@ public class Program1 {
              }
              int k = 0;
              boolean same = true;
-             while (k < word.length()) {
-                 if (linkedlist.GetValue() != word.charAt(k)) {
+             while (k < pattern.length()) {
+                 if (linkedlist.GetValue() != pattern.charAt(k)) {
                      same = false;
                      break;
                  }
@@ -47,4 +47,46 @@ public class Program1 {
          long endTimeBrute = System.currentTimeMillis();
          System.out.println("Brute force took " + (endTimeBrute - startTimeBrute) + " milliseconds");
      }
+
+    /*
+    ChatGPT helped me understand that the failure function keeps track of the longest matching prefix
+    and suffix in the pattern. The length increases when characters match and regresses when there’s
+    a mismatch, allowing us to check the same index again after falling back.
+    */
+    private static int[] FailureFunction(pattern) {
+        // Create the failure function array
+        int[] fail = new int[pattern.length()];
+        // Set the first index to 0 since it the first comparison will always be 0
+        fail[0] = 0;
+        // Create the length value that hold the correct number of letters that match
+        int len = 0;
+
+        // For the length of the pattern
+        for (int i = 1; i < pattern.length(); i++) {
+            // If the character and pattern index i and pattern index (length) match
+            if (pattern.charAt(i) == pattern.charAt(len)) {
+                // increase the length
+                len++;
+                // And set the failure function array at index i to that length and then move on to the next index to compare
+                fail[i] = len;
+            }
+            // If they dont match
+            else {
+                // And the length is not 0 (Chat.gpt helped understand this part)
+                if (len != 0) {
+                    // Fall back to previous prefix-suffix length
+                    len = fail[len - 1];
+                    // Retry this index with shorter prefix
+                    // i--;
+                }
+                // If the length is 0 then set the failure function array to 0 at the corresponding index
+                else {
+                    fail[i] = 0;
+                }
+            }
+        }
+        return fail;
+    }
 }
+
+
