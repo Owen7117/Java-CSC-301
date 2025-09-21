@@ -1,6 +1,11 @@
+// Owen O'Neil
+//9/12/25
+//CSC-301 Program 1
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
 
 public class Program1 {
      public static void main(String[] args) {
@@ -58,35 +63,25 @@ public class Program1 {
     and suffix in the pattern. The length increases when characters match and regresses when there’s
     a mismatch, allowing us to check the same index again after falling back.
     */
-    private static int[] FailureFunction(String pattern) {
-        // Create the failure function array
-        int[] fail = new int[pattern.length()];
-        // Set the first index to 0 since it the first comparison will always be 0
-        fail[0] = 0;
-        // Create the length value that hold the correct number of letters that match
+    private static List<Integer> FailureFunction(String pattern) {
+        List<Integer> fail = new List<>();
+        fail.InsertAfter(0);
         int len = 0;
-
-        // For the length of the pattern
-        for (int i = 1; i < pattern.length(); i++) {
-            // If the character and pattern index i and pattern index (length) match
-            if (pattern.charAt(i) == pattern.charAt(len)) {
-                // increase the length
+        int i = 1;
+        while (len < pattern.length()) {
+            if(pattern.charAt(i) == pattern.charAt(len)){
                 len++;
-                // And set the failure function array at index i to that length and then move on to the next index to compare
-                fail[i] = len;
+                fail.InsertAfter(len);
+                i++;
             }
-            // If they don't match
             else {
-                // And the length is not 0 (Chat.gpt helped understand this part)
-                if (len != 0) {
-                    // Fall back to previous prefix-suffix length
-                    len = fail[len - 1];
-                    // Retry this index with shorter prefix
-                    // i--;
+                if(len != 0){
+                    fail.SetPos(len-1);
+                    len = fail.GetValue();
                 }
-                // If the length is 0 then set the failure function array to 0 at the corresponding index
                 else {
-                    fail[i] = 0;
+                    fail.InsertAfter(0);
+                    i++;
                 }
             }
         }
