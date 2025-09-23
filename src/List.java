@@ -48,6 +48,7 @@ public class List<Type> {
             curr = curr.getLink();
         }
     }
+
     // I used chat.gpt to help me figure out how to create a new node and set them as temp nodes
     public void Prev() {
         // Cannot move past the head
@@ -69,6 +70,7 @@ public class List<Type> {
             curr = curr.getLink();
         }
     }
+
     // Chat.gpt helped me again setting temp nodes and traversing the list until you reach the current node
     public int GetPos() {
         // if the list is empty return -1
@@ -132,44 +134,12 @@ public class List<Type> {
         // Also increase the size of the list
         num_items++;
     }
+    public void Replace(Type data) {
+        // Replace the data in the node
+        if (curr != null) {
+            curr.setData(data);
+        }
+    }
 }
 
-/*
-    // inserts an item after the current element
-// the new element becomes the current
-// this should not be possible for a full list
-    // removes the current element
-// this should not be possible for an empty list
-    public void Remove()
-    {
-    }
-    // replaces the value of the current element with the specified value
-// this should not be possible for an empty list
-    public void Replace(Type data)
-    {
-    }
-    // returns if the list is empty
-    public boolean IsEmpty()
-    {
-        return (head == null);
-    }
-    // returns if the list is full
-    public boolean IsFull()
-    {
-    }
-    // returns if two lists are equal (by value)
-    public boolean Equals(List<Type> l)
-    {
-    }
-    // returns the concatenation of two lists
-// l should not be modified
-// l should be concatenated to the end of *this
-// the returned list should not exceed MAX_SIZE elements
-// the last element of the new list is the current
-    public List<Type> Add(List<Type> l)
-    {
-    }
-    // returns a string representation of the entire list (e.g., 1 2 3 4 5)
-// the string "NULL" should be returned for an empty list
-*/
 
