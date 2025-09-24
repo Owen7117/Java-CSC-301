@@ -25,6 +25,11 @@ public class List<Type> {
         }
     }
 
+    // If the linked list is empty it will return is true if not it will return false
+    public boolean IsEmpty() {
+        return num_items == 0;
+    }
+
     public void First() {
         if (head != null) {
             curr = head;
@@ -49,7 +54,7 @@ public class List<Type> {
         }
     }
 
-    // I used chat.gpt to help me figure out how to create a new node and set them as temp nodes
+    // Chat.gpt to help me figure out how to create a new node and set them as temp nodes
     public void Prev() {
         // Cannot move past the head
         if (curr == null || curr == head) {
@@ -104,7 +109,7 @@ public class List<Type> {
         return this.num_items;
     }
 
-    // Chat.gpt helped me understand how to create a new node while putting in the new data and set the link between the current node and the newly created node
+    // Chat.gpt helped me write and understand how to create a new node while putting in the new data and set the link between the current node and the newly created node
     public void InsertAfter(Type data) {
         // Checks if the list has reached its maximum size so it doesn't go out of bounds when inserting into the linked list if there are to many nodes
         if (num_items >= MAX_SIZE) {
@@ -134,6 +139,52 @@ public class List<Type> {
         // Also increase the size of the list
         num_items++;
     }
+    /*
+    // Chat.GPT wrote this part because I was stuck, but I now understand that the temp link
+    must be set as the head so that the new node can be the setLink to curr thus inserting before.
+    I guess it's just the opposite of insert after
+     */
+    public void InsertBefore(Type data) {
+        // If the list is full
+        if (num_items >= MAX_SIZE) {
+            System.out.println("List is full");
+            return;
+        }
+        // create the new node
+        Node<Type> newNode = new Node<>();
+        // Insert the data
+        newNode.setData(data);
+        // If list is empty the new node is the head, curr, and tail
+        if (head == null) {
+            head = tail = curr = newNode;
+        }
+        // If curr is at head
+        else if (curr == head) {
+            // Set the link to the head
+            newNode.setLink(head);
+            // Set the head as a node and curr as a new node
+            head = newNode;
+            curr = newNode;
+        }
+        // If curr is somewhere in the middle
+        else {
+            // Set the temp node as the head
+            Node<Type> temp = head;
+            // Go until the link is at the current node
+            while (temp.getLink() != curr) {
+                temp = temp.getLink();
+            }
+            // Now temp is the node just before curr
+            temp.setLink(newNode);
+            // Set the new node link to curr
+            newNode.setLink(curr);
+            // set new node as curr
+            curr = newNode;
+        }
+
+        num_items++;
+    }
+
     public void Replace(Type data) {
         // Replace the data in the node
         if (curr != null) {
