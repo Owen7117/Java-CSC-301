@@ -13,7 +13,7 @@ public class Program1 {
         List<Character> linkedlist = new List<>();
         try {
             // Set the input file
-            File file = new File("prog1input1.txt");
+            File file = new File("prog1input2.txt");
             Scanner scanner = new Scanner(file);
             // Take in the file and insert each character into a linked list node
             while (scanner.hasNextLine()) {
@@ -29,7 +29,7 @@ public class Program1 {
             System.out.println("File not found: " + e.getMessage());
         }
         // Set the pattern
-        String pattern = "Ickle";
+        String pattern = "mmmmm";
         // Do the time calculation for BruteForce, KMP, and BoyerMoore
         long startTimeBrute = System.nanoTime();
         BruteForce(linkedlist, pattern);
@@ -101,7 +101,7 @@ public class Program1 {
                 }
             } else {
                 /*
-                 Chat.GPT helped me understand/ write part this for the failure function and conceptually the fallback is the same for KMP
+                 Chat.GPT helped me write/ this part and understand how conceptually, the fallback is the same for both the failure function and KMP
                 */
                 if (patternIndex != 0) {
                     fail.SetPos(patternIndex - 1);
@@ -206,7 +206,7 @@ public class Program1 {
     }
 
     /*
-    // Chat.GPT helped me write/understand that matched suffix is needed so you can determine where the missmatch occured
+    // Chat.GPT helped me write/understand that matched suffix is needed so you can determine where the mismatch occurred
     and calculate the distance to its last occurrence
     */
     private static int badCharacter(List<Character> linkedlist, String pattern, int matchedSuffixLen) {
