@@ -24,7 +24,7 @@ public class Program1 {
                 }
             }
             scanner.close();
-        // In case the file is not found, there is a message displayed to let us know
+            // In case the file is not found, there is a message displayed to let us know
         } catch (FileNotFoundException e) {
             System.out.println("File not found: " + e.getMessage());
         }
@@ -86,7 +86,7 @@ public class Program1 {
                 len++;
                 fail.InsertAfter(len);
                 patternPos++;
-            // if the characters are not the same
+                // if the characters are not the same
             } else {
                 /*
                 Chat.GPT helped me understand that when a character fails to match, and the length is not 0(there was a previous match),
@@ -148,5 +148,48 @@ public class Program1 {
     }
 
     private static void BoyerMoore(List<Character> textList, String pattern) {
+        int textSize = textList.GetSize();
+        int patLen = pattern.length();
+        // Linked lists to store characters and their last occurrence
+        List<Character> patChars = new List<>();
+        List<Integer> patPositions = new List<>();
+        // Fill lists
+        for (int i = 0; i < patLen; i++) {
+            patChars.InsertAfter(pattern.charAt(i));
+            patPositions.InsertAfter(i);
+        }
+        int shift = 0;
+        while (shift <= textSize - patLen) {
+            int j = patLen - 1;
+            while (j >= 0) {
+                textList.SetPos(shift + j);
+                if (textList.GetValue() != pattern.charAt(j)) {
+                    break;
+                }
+                j--;
+            }
+            if (j < 0) {
+
+                System.out.println("Pattern found at index " + shift);
+                shift++;
+            }
+            else {
+                textList.SetPos(shift + j);
+                char badChar = textList.GetValue();
+                int lastOccur = -1;
+                patChars.First();
+                patPositions.First();
+                for (int k = 0; k < patLen; k++) {
+                    if (patChars.GetValue() == badChar) {
+                        lastOccur = patPositions.GetValue();
+                    }
+                    patChars.Next();
+                    patPositions.Next();
+                }
+                int skip = Math.max(1, j - lastOccur);
+                shift += skip;
+            }
+        }
+    }
 }
 
