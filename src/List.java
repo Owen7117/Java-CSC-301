@@ -2,7 +2,7 @@ import java.util.*;
 
 public class List<Type> {
 
-    public static final int MAX_SIZE = 1000;
+    public static final int MAX_SIZE = 40000;
     private Node<Type> head;
     private Node<Type> tail;
     private Node<Type> curr;
@@ -184,7 +184,6 @@ public class List<Type> {
 
         num_items++;
     }
-
     public void Replace(Type data) {
         // Replace the data in the node
         if (curr != null) {
