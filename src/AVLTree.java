@@ -98,67 +98,94 @@ public class AVLTree extends BinaryTree {
         return currentNode;
     }
 
-
+    // Chat.gpt helped me understand and make the right and left rotation
+    // Right rotation on the subtree with the root as the currentNode
     private BinNode rotateRight(BinNode currentNode){
+        // If the node is null of doesn't have a left child, you cant preform the rotation so return null
         if (currentNode == null || currentNode.getLeft() == null)
             return currentNode;
+        // Stores the left child so we can make it the new root
         BinNode left = currentNode.getLeft();
+        // Move the left child's left subtree to be the currentNodes left subtree
         currentNode.setLeft(left.getRight());
+        // Make the currentNode the right child of the left node
         left.setRight(currentNode);
+        // update the height of the current
         updateHeight(currentNode);
+        // update the height of the left node
         updateHeight(left);
+        // return the new root of the subtree
         return left;
     }
 
+    // Left rotation on the subtree with the root as the currentNode
     private BinNode rotateLeft(BinNode currentNode){
+        // If the node is null of doesn't have a left child, you cant preform the rotation so return null
         if (currentNode == null || currentNode.getRight() == null)
             return currentNode;
+        // Stores the right child so we can make it the new root
         BinNode right = currentNode.getRight();
+        // Move the right child's left subtree to be the currentNodes right subtree
         currentNode.setRight(right.getLeft());
+        // Make the currentNode the left child of the right node
         right.setLeft(currentNode);
+        // Update height of currentNode
         updateHeight(currentNode);
+        // Update height of right node
         updateHeight(right);
+        // Return the new root of the subtree
         return right;
     }
 
+    // Remove method overrides the binary tree remove method
     @Override
     public void remove(String data) {
         super.setRoot(remove(super.getRoot(), data));
     }
 
+    // Chat.gpt helped me understand how the remove function works and that it works recursively
     private BinNode remove(BinNode node, String data) {
+        // The node is null
+        // Base case
         if (node == null) {
             return null;
         }
+        // Compare the value to be deleted with the currentNode
         int cmp = data.compareTo(node.getData());
-        // Traverse left or right
+        // If currentNode is less than 0 go left node
         if (cmp < 0) {
             node.setLeft(remove(node.getLeft(), data));
         }
+        // If currentNode is greater than 0 go to the right node
         else if (cmp > 0) {
             node.setRight(remove(node.getRight(), data));
         }
+        // Found node to remove
         else {
-            // Found the node to remove
-            // Case 1: No children
+            // First case - No children
+            // Just remove the leaf node
             if (node.getLeft() == null && node.getRight() == null) {
                 return null;
             }
-            // Case 2: One child
+            // Second case - One child
+            // Replace the node with its child
             else if (node.getLeft() == null) {
                 return node.getRight();
             }
             else if (node.getRight() == null) {
                 return node.getLeft();
             }
-            // Case 3: Two children
+            // Third case - Two children
             else {
-                // Use inorder predecessor (max in left subtree)
+                // Traverse one node to the left
                 BinNode replacement = node.getLeft();
+                // Keep going until you find the max node to the right of that node
                 while (replacement.getRight() != null) {
                     replacement = replacement.getRight();
                 }
+                // Copy that value into the current node
                 node.setData(replacement.getData());
+                // recursively delete that replacement node because it's a duplicate
                 node.setLeft(remove(node.getLeft(), replacement.getData()));
             }
         }
