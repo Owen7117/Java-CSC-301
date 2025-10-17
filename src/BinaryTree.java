@@ -79,7 +79,6 @@ public class BinaryTree {
         } else {
             return search(r.getRight(), val);
         }
-
     }
 
     public void remove(String data) {
@@ -92,12 +91,12 @@ public class BinaryTree {
             return null;
         }
 
-        int comparison = data.compareTo(node.getData());
+        int cmp = data.compareTo(node.getData());
 
-        if (comparison < 0) {
+        if (cmp < 0) {
             node.setLeft(remove(node.getLeft(), data));
         }
-        else if (comparison > 0) {
+        else if (cmp > 0) {
             node.setRight(remove(node.getRight(), data));
         }
         else {

@@ -14,14 +14,22 @@ public class Program2Main {
         try{
             File file = new File("SciFiLiBooks.txt");
             Scanner scanner = new Scanner(file);
-            long startTimeBin = System.nanoTime();
+            long startTimeBinInsert = System.nanoTime();
             while(scanner.hasNextLine()){
                 String line = scanner.nextLine();
                 binaryTree.insert(line);
                 }
             scanner.close();
-            long endTimeBin = System.nanoTime();
-            System.out.println("Binary tree insert took " + (endTimeBin - startTimeBin) + " nanoseconds.");
+            long endTimeBinInsert = System.nanoTime();
+            System.out.println("Binary tree insert took " + (endTimeBinInsert - startTimeBinInsert) + " nanoseconds.");
+            long startTimeBinSearch = System.nanoTime();
+            binaryTree.search("SomeBookNotInTre");
+            long endTimeBinSearch = System.nanoTime();
+            System.out.println("Binary tree search took " + (endTimeBinSearch - startTimeBinSearch) + " nanoseconds.");
+            long startTimeBinRemove = System.nanoTime();
+            binaryTree.remove("Anathem");
+            long endTimeBinRemove= System.nanoTime();
+            System.out.println("Binary tree remove took " + (endTimeBinRemove- startTimeBinRemove) + " nanoseconds.");
         }
         catch (FileNotFoundException e) {
             System.out.println("File not found: " + e.getMessage());
@@ -29,14 +37,22 @@ public class Program2Main {
         try{
             File file = new File("SciFiLiBooks.txt");
             Scanner scanner = new Scanner(file);
-            long startTimeAVL = System.nanoTime();
+            long startTimeAVLInsert = System.nanoTime();
             while(scanner.hasNextLine()){
                 String line = scanner.nextLine();
                 avlTree.insert(line);
             }
             scanner.close();
-            long endTimeAVL = System.nanoTime();
-            System.out.println("AVL tree insert took " + (endTimeAVL - startTimeAVL) + " nanoseconds.");
+            long endTimeAVLInsert = System.nanoTime();
+            System.out.println("AVL tree insert took " + (endTimeAVLInsert - startTimeAVLInsert) + " nanoseconds.");
+            long startTimeAVLSearch = System.nanoTime();
+            avlTree.search("SomeBookNotInTre");
+            long endTimeAVLSearch = System.nanoTime();
+            System.out.println("AVL tree search took " + (endTimeAVLSearch - startTimeAVLSearch) + " nanoseconds.");
+            long startTimeAVLRemove = System.nanoTime();
+            avlTree.remove("Anathem");
+            long endTimeAVLRemove= System.nanoTime();
+            System.out.println("AVL tree remove took " + (endTimeAVLRemove- startTimeAVLRemove) + " nanoseconds.");
         }
         catch (FileNotFoundException e) {
             System.out.println("File not found: " + e.getMessage());
