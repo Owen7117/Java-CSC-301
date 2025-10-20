@@ -1,3 +1,14 @@
+// Owen O'Neil
+// 10/16/25
+//Program 2: AVL and Red Black Trees
+/*
+ - Binary tree that takes in strings as an input
+ - Inserts the data into nodes in the tree
+ - Sorts tree based on if the new input is less than or greater than the current node
+ - If the node is less than it becomes the left child of the comparison node and if it is greater is goes to the right
+ - When something is being searched for it goes through every node
+ */
+
 public class BinaryTree {
 
     private BinNode root;
@@ -81,55 +92,56 @@ public class BinaryTree {
         }
     }
 
+    // Helper method that calls the remove function recursively
     public void remove(String data) {
         this.root = remove(this.root, data);
     }
 
-    /* Helper method to recursively remove a node */
+    // Remove node method
     private BinNode remove(BinNode node, String data) {
         if (node == null) {
             return null;
         }
-
         int cmp = data.compareTo(node.getData());
-
+        // If the current node is less than its comparison move to the left node and call the remove function
         if (cmp < 0) {
             node.setLeft(remove(node.getLeft(), data));
         }
+        // If the current nod is greater go to the node on the right and call the remove function
         else if (cmp > 0) {
             node.setRight(remove(node.getRight(), data));
         }
-        else {
-            // Found the node to delete
-
-            // Case 1: No children (leaf node)
+        // Found the node to delete
+        else{
+            // First case - the node is a leaf so just remove it
             if (node.getLeft() == null && node.getRight() == null) {
                 return null;
             }
-            // Case 2: One child
+            // Second case - the node has one child
+            // Replace the node with its child and remove
             else if (node.getLeft() == null) {
                 return node.getRight();
             }
             else if (node.getRight() == null) {
                 return node.getLeft();
             }
-            // Case 3: Two children
+            // Third case - the node has 2 children
             else {
-                // Find inorder successor (smallest in right subtree)
-                BinNode successor = findMin(node.getRight());
-                node.setData(successor.getData());
-                node.setRight(remove(node.getRight(), successor.getData()));
+                // Traverse one node to the left
+                BinNode replacement = node.getLeft();
+                // Keep going until you find the max node to the right of that node
+                while (replacement.getRight() != null) {
+                    replacement = replacement.getRight();
+                }
+                // Copy that value into the current node
+                node.setData(replacement.getData());
+                // recursively delete that replacement node because it's a duplicate
+                node.setLeft(remove(node.getLeft(), replacement.getData()));
             }
         }
         return node;
     }
 
-    private BinNode findMin(BinNode node) {
-        while (node.getLeft() != null) {
-            node = node.getLeft();
-        }
-        return node;
-    }
 
     /* Function for inorder traversal */
     public void inorder() {

@@ -1,5 +1,6 @@
-
 // Owen O'Neil
+// 10/16/25
+//Program 2: AVL and Red Black Trees
 /*
  - AVL tree that takes in strings as an input
  - Sorts the strings using the Binary tree and balances the tree if the leftHeight - rightHeight
@@ -19,7 +20,7 @@ public class AVLTree extends BinaryTree {
     // Overrides the Binary tree insert
     @Override
     public void insert(String data) {
-        // Recursively  insert the node and update the root
+        // Recursively insert the node and update the root
         super.setRoot(insertNode(super.getRoot(), data));
     }
 
@@ -72,6 +73,11 @@ public class AVLTree extends BinaryTree {
     }
 
     // Balanced the tree if necessary
+    /*
+    Chat.gpt helped me understand that to do a double rotation you need to you need to traverse to the current nodes
+    child and call the rotate method setting the current node as its child (this allows for a single rotation after
+    competition)
+     */
     private BinNode balance(BinNode currentNode){
         int bd = balanceDetector(currentNode);
         // If the balance is greater than 1 the tree is left heavy
