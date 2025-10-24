@@ -3,6 +3,7 @@ public class BinNode {
     private BinNode left;
     private BinNode right;
     private int height;
+    private boolean color;
 
     public BinNode(){
         data = "";
@@ -40,5 +41,11 @@ public class BinNode {
     }
     public int getHeight(){
         return height;
+    }
+    public void setColor(boolean color){
+        this.color = color;
+    }
+    public boolean getColor(){
+        return this.color;
     }
 }

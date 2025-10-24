@@ -11,6 +11,7 @@ public class Program2Main {
     public static void main(String[] args){
         BinaryTree binaryTree = new BinaryTree();
         AVLTree avlTree = new AVLTree();
+        RedBlackTree redBlackTree = new RedBlackTree();
         try{
             File file = new File("SciFiLiBooks.txt");
             Scanner scanner = new Scanner(file);
