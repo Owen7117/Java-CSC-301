@@ -27,16 +27,16 @@ public class AVLTree extends BinaryTree {
     // Recursive insertion with balancing
     private BinNode insertNode(BinNode currentNode, String data) {
         // The base case, if the node is null insert a new node
-        if (currentNode == null) {
+        if(currentNode == null) {
             BinNode newNode = new BinNode(data);
             // leaf node height is 1
             newNode.setHeight(1);
             return newNode;
         }
         // Same insert logic as binary tree
-        if (data.compareTo(currentNode.getData()) < 0) {
+        if(data.compareTo(currentNode.getData()) < 0) {
             currentNode.setLeft(insertNode(currentNode.getLeft(), data));
-        } else if (data.compareTo(currentNode.getData()) > 0) {
+        } else if(data.compareTo(currentNode.getData()) > 0) {
             currentNode.setRight(insertNode(currentNode.getRight(), data));
         } else {
             // Return currentNode if there is a duplicate
@@ -66,7 +66,7 @@ public class AVLTree extends BinaryTree {
 
     // Calculates the tree height so it knows when to balance it
     private int balanceDetector(BinNode currentNode){
-        if (currentNode == null)
+        if(currentNode == null)
             return 0;
         // Returns the calculated balance of the tree
         return height(currentNode.getLeft()) - height(currentNode.getRight());
@@ -108,7 +108,7 @@ public class AVLTree extends BinaryTree {
     // Right rotation on the subtree with the root as the currentNode
     private BinNode rotateRight(BinNode currentNode){
         // If the node is null of doesn't have a left child, you cant preform the rotation so return null
-        if (currentNode == null || currentNode.getLeft() == null)
+        if(currentNode == null || currentNode.getLeft() == null)
             return currentNode;
         // Stores the left child so we can make it the new root
         BinNode left = currentNode.getLeft();
@@ -127,7 +127,7 @@ public class AVLTree extends BinaryTree {
     // Left rotation on the subtree with the root as the currentNode
     private BinNode rotateLeft(BinNode currentNode){
         // If the node is null of doesn't have a left child, you cant preform the rotation so return null
-        if (currentNode == null || currentNode.getRight() == null)
+        if(currentNode == null || currentNode.getRight() == null)
             return currentNode;
         // Stores the right child so we can make it the new root
         BinNode right = currentNode.getRight();
@@ -146,58 +146,58 @@ public class AVLTree extends BinaryTree {
     // Remove method overrides the binary tree remove method
     @Override
     public void remove(String data) {
-        super.setRoot(remove(super.getRoot(), data));
+        super.setRoot(removeNode(super.getRoot(), data));
     }
 
     // Chat.gpt helped me understand how the remove function works and that it works recursively
-    private BinNode remove(BinNode node, String data) {
+    private BinNode removeNode(BinNode currentNode, String data) {
         // The node is null
         // Base case
-        if (node == null) {
+        if(currentNode == null) {
             return null;
         }
         // Compare the value to be deleted with the currentNode
-        int cmp = data.compareTo(node.getData());
+        int cmp = data.compareTo(currentNode.getData());
         // If currentNode is less than 0 go left node
-        if (cmp < 0) {
-            node.setLeft(remove(node.getLeft(), data));
+        if(cmp < 0) {
+            currentNode.setLeft(removeNode(currentNode.getLeft(), data));
         }
         // If currentNode is greater than 0 go to the right node
-        else if (cmp > 0) {
-            node.setRight(remove(node.getRight(), data));
+        else if(cmp > 0) {
+            currentNode.setRight(removeNode(currentNode.getRight(), data));
         }
         // Found node to remove
         else {
             // First case - No children
             // Just remove the leaf node
-            if (node.getLeft() == null && node.getRight() == null) {
+            if(currentNode.getLeft() == null && currentNode.getRight() == null) {
                 return null;
             }
             // Second case - One child
             // Replace the node with its child
-            else if (node.getLeft() == null) {
-                return node.getRight();
+            else if(currentNode.getLeft() == null) {
+                return currentNode.getRight();
             }
-            else if (node.getRight() == null) {
-                return node.getLeft();
+            else if(currentNode.getRight() == null) {
+                return currentNode.getLeft();
             }
             // Third case - Two children
             else {
                 // Traverse one node to the left
-                BinNode replacement = node.getLeft();
+                BinNode replacement = currentNode.getLeft();
                 // Keep going until you find the max node to the right of that node
-                while (replacement.getRight() != null) {
+                while(replacement.getRight() != null) {
                     replacement = replacement.getRight();
                 }
                 // Copy that value into the current node
-                node.setData(replacement.getData());
+                currentNode.setData(replacement.getData());
                 // recursively delete that replacement node because it's a duplicate
-                node.setLeft(remove(node.getLeft(), replacement.getData()));
+                currentNode.setLeft(removeNode(currentNode.getLeft(), replacement.getData()));
             }
         }
         // Update height and balance on the way back up
-        updateHeight(node);
-        return balance(node);
+        updateHeight(currentNode);
+        return balance(currentNode);
     }
 }
 
