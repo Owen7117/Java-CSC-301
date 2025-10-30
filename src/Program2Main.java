@@ -11,7 +11,7 @@ public class Program2Main {
     public static void main(String[] args){
         BinaryTree binaryTree = new BinaryTree();
         AVLTree avlTree = new AVLTree();
-        RedBlackTree redBlackTree = new RedBlackTree();
+        RedBlackTree redblackTree = new RedBlackTree();
         try{
             File file = new File("SciFiLiBooks.txt");
             Scanner scanner = new Scanner(file);
@@ -54,6 +54,29 @@ public class Program2Main {
             avlTree.remove("Anathem");
             long endTimeAVLRemove= System.nanoTime();
             System.out.println("AVL tree remove took " + (endTimeAVLRemove- startTimeAVLRemove) + " nanoseconds.");
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        }
+        try{
+            File file = new File("SciFiLiBooks.txt");
+            Scanner scanner = new Scanner(file);
+            long startTimeRBTInsert = System.nanoTime();
+            while(scanner.hasNextLine()){
+                String line = scanner.nextLine();
+                redblackTree.insert(line);
+            }
+            scanner.close();
+            long endTimeRBTInsert = System.nanoTime();
+            System.out.println("Red black tree insert took " + (endTimeRBTInsert - startTimeRBTInsert) + " nanoseconds.");
+            long startTimeRBTSearch = System.nanoTime();
+            redblackTree.search("SomeBookNotInTre");
+            long endTimeRBTSearch = System.nanoTime();
+            System.out.println("Red black tree search took " + (endTimeRBTSearch - startTimeRBTSearch) + " nanoseconds.");
+            long startTimeRBTRemove = System.nanoTime();
+            redblackTree.remove("Anathem");
+            long endTimeRBTRemove= System.nanoTime();
+            System.out.println("Red black tree remove took " + (endTimeRBTRemove- startTimeRBTRemove) + " nanoseconds.");
         }
         catch (FileNotFoundException e) {
             System.out.println("File not found: " + e.getMessage());
