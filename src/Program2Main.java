@@ -6,12 +6,15 @@ import java.util.Scanner;
 //10/16/25
 //Program 2: AVL and Red Black Trees
 
+//Main program that runs and times each method for Binary, AVL and Red Black trees
 
 public class Program2Main {
     public static void main(String[] args){
+        // Create the trees
         BinaryTree binaryTree = new BinaryTree();
         AVLTree avlTree = new AVLTree();
         RedBlackTree redblackTree = new RedBlackTree();
+        // Insert, search, and remove the data while timing each into the Binary tree
         try{
             File file = new File("SciFiLiBooks.txt");
             Scanner scanner = new Scanner(file);
@@ -35,6 +38,7 @@ public class Program2Main {
         catch (FileNotFoundException e) {
             System.out.println("File not found: " + e.getMessage());
         }
+        // Insert, search, and remove the data while timing each into the AVL tree
         try{
             File file = new File("SciFiLiBooks.txt");
             Scanner scanner = new Scanner(file);
@@ -58,6 +62,7 @@ public class Program2Main {
         catch (FileNotFoundException e) {
             System.out.println("File not found: " + e.getMessage());
         }
+        // Insert, search, and remove the data while timing each into the Red Black tree
         try{
             File file = new File("SciFiLiBooks.txt");
             Scanner scanner = new Scanner(file);
@@ -83,3 +88,14 @@ public class Program2Main {
         }
     }
 }
+
+/*
+Binary trees are the simplest tree to use, but as the amount of data getting inserted increases, the inserts become
+slower because the tree isn't balanced. AVL trees are a little harder to implement, but it keeps the tree balanced which
+make the searching faster but makes insertion and removal slower because you need to keep track of the height of each
+node. Red Black trees are the hardest to implement because of their balancing rules with red and black nodes, but it
+also allows for the insertion to be faster than AVL and Binary while still keeping the search and removal speed quick.
+Binary trees are best for small datasets so the tree won't have enough data to become super unbalanced. ALV trees are
+best for application where searching is the most important. Red Black trees are best then there are frequent inerts and
+deletes.
+ */

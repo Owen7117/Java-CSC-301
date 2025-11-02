@@ -25,7 +25,7 @@ public class RedBlackTree extends BinaryTree {
     private boolean isRed(BinNode currentNode) {
         // Null nodes are considered black
         if (currentNode == null) {
-        return false;
+             return false;
     }
         // Will return true if the node is red and false if not
         return currentNode.getColor() == red;
@@ -49,41 +49,44 @@ public class RedBlackTree extends BinaryTree {
             newNode.setColor(red);
             return newNode;
         }
-        // Same insert logic as binary tree
+        // Same insert logic as binary tree but ignores duplicates
         if (data.compareTo(currentNode.getData()) < 0) {
             currentNode.setLeft(insertNode(currentNode.getLeft(), data));
         } else if (data.compareTo(currentNode.getData()) > 0) {
             currentNode.setRight(insertNode(currentNode.getRight(), data));
         } else {
-            // Return currentNode if there is a duplicate
+            // Duplicate, so do nothing
             return currentNode;
         }
-        // Must fix the subtree as the recursion unwinds
-        currentNode = fixTree(currentNode);
-        return currentNode;
+        // Only fix/balance tree if a new node was actually inserted
+        return fixTree(currentNode);
     }
 
     // Subroutine that fixes the tree after insertion
     private BinNode fixTree(BinNode currentNode) {
-        // First Case - Right child is red and the left child is black
-        if (isRed(currentNode.getRight()) && !isRed(currentNode.getLeft())) {
+        // First case - right child is red and left child is black
+        if (currentNode.getRight() != null && isRed(currentNode.getRight()) &&
+                (currentNode.getLeft() == null || !isRed(currentNode.getLeft()))) {
             currentNode = rotateLeft(currentNode);
         }
-        // Second Case - Left child and its left child are both red
-        if (isRed(currentNode.getLeft()) && isRed(currentNode.getLeft().getLeft())) {
-            currentNode = rotateRight(currentNode);
+        // Second case - left child and left-left grandchild are both red
+        if (currentNode.getLeft() != null && isRed(currentNode.getLeft())) {
+            BinNode leftChild = currentNode.getLeft();
+            if (leftChild.getLeft() != null && isRed(leftChild.getLeft())) {
+                currentNode = rotateRight(currentNode);
+            }
         }
-        // Third case - Both children are red so flip colors
-        if (isRed(currentNode.getLeft()) && isRed(currentNode.getRight())) {
+        // Third case - both children are red, flip colors
+        if (currentNode.getLeft() != null && isRed(currentNode.getLeft()) &&
+                currentNode.getRight() != null && isRed(currentNode.getRight())) {
             flipColors(currentNode);
         }
-        // Return rebalanced node
         return currentNode;
     }
 
     // Subroutine that rotates the subtree left from the current node
     private BinNode rotateLeft(BinNode currentNode) {
-        // If the node is null of doesn't have a right child, you cant preform the rotation so return null
+        // If the node is null of doesn't have a right child, you cant preform the rotation so return current node
         if (currentNode == null || currentNode.getRight() == null)
             return currentNode;
         // Get right child
@@ -101,7 +104,7 @@ public class RedBlackTree extends BinaryTree {
     }
     // Subroutine that rotates the subroutine right form the current node
     private BinNode rotateRight(BinNode currentNode) {
-        // If the node is null of doesn't have a left child, you cant preform the rotation so return null
+        // If the node is null or doesn't have a left child, you can't perform the rotation so return current node
         if (currentNode == null || currentNode.getLeft() == null)
             return currentNode;
         // Store a reference to the left child (the one that will move up)
@@ -119,14 +122,15 @@ public class RedBlackTree extends BinaryTree {
     }
     // Subroutine that changes the color of the current node
     private void changeColor(BinNode currentNode) {
-        if (currentNode.getColor() == red) {
-            currentNode.setColor(black);
-        } else if (currentNode.getColor() == black) {
-            currentNode.setColor(red);
-        }
+        // Do nothing if null
+        if (currentNode == null) return;
+        // Flip color otherwise
+        currentNode.setColor(!currentNode.getColor());
     }
+
     // subroutine that flips the color of the current node and its two children
     private void flipColors(BinNode currentNode) {
+        if (currentNode == null){return;}
         changeColor(currentNode);
         changeColor(currentNode.getLeft());
         changeColor(currentNode.getRight());
@@ -171,19 +175,19 @@ public class RedBlackTree extends BinaryTree {
             }
             // Second case - One child
             // Replace the node with its child
-            // Only right child exists
-            else if (currentNode.getLeft() == null) {
-                BinNode childRight = currentNode.getRight();
-                childRight.setColor(currentNode.getColor());
-                return childRight;
-            // Only left child exists
-            } else if (currentNode.getRight() == null) {
-                BinNode childLeft = currentNode.getLeft();
-                childLeft.setColor(currentNode.getColor());
-                return childLeft;
+            BinNode child = null;
+            if (currentNode.getLeft() != null && currentNode.getRight() == null) {
+                child = currentNode.getLeft();
+            } else if (currentNode.getRight() != null && currentNode.getLeft() == null) {
+                child = currentNode.getRight();
+            }
+            if (child != null) {
+                // Set the child color same as current node
+                child.setColor(currentNode.getColor());
+                return child;
             }
             // Third case - Two children
-            // First find the leaf node that is an inorder successor
+            // First find the leaf node that is an inorder predecessor
             else {
                 // Traverse one node to the left
                 BinNode replacement = currentNode.getLeft();
@@ -212,15 +216,20 @@ public class RedBlackTree extends BinaryTree {
     }
     // Subroutine that fixes the double black node problem
     // chat.gpt helped me understand and write this
-    private BinNode fixDoubleBlack(BinNode node) {
+    private BinNode fixDoubleBlack(BinNode currentNode) {
+        // If the current node is null or is the root, double black is resolved
+        if (currentNode == null || currentNode == super.getRoot()) {
+            return currentNode;
+        }
+
         // Find the parent of the double black
-        BinNode parent = findParent(super.getRoot(), node);
+        BinNode parent = findParent(super.getRoot(), currentNode);
         // Base case - If the node is the root of the tree, stop
-        if (parent == null) return node;
+        if (parent == null) return currentNode;
 
         // Determine if the node a left or right child
         boolean nodeIsLeftChild;
-        if (parent.getLeft() == node) {
+        if (parent.getLeft() == currentNode) {
             nodeIsLeftChild = true;
         } else {
             nodeIsLeftChild = false;
@@ -233,6 +242,12 @@ public class RedBlackTree extends BinaryTree {
         } else {
             siblingNode = parent.getLeft();
         }
+
+        // If sibling is null, pass double black up to parent
+        if (siblingNode == null) {
+            return fixDoubleBlack(parent);
+        }
+
 
         // First case -The Sibling is red
         // Rotate and recolor
@@ -254,11 +269,14 @@ public class RedBlackTree extends BinaryTree {
 
         // Second case - The Sibling and its children are black
         // Recolor
-        if (!isRed(siblingNode.getLeft()) && !isRed(siblingNode.getRight())) {
+        if ((siblingNode.getLeft() == null || !isRed(siblingNode.getLeft())) && (siblingNode.getRight() == null || !isRed(siblingNode.getRight()))) {
+            // Sibling turns red
             siblingNode.setColor(red);
             if (!isRed(parent)) {
+                // Recurse up if parent is black
                 parent = fixDoubleBlack(parent);
             } else {
+                // Otherwise parent becomes black
                 parent.setColor(black);
             }
         }
@@ -267,22 +285,30 @@ public class RedBlackTree extends BinaryTree {
             if (nodeIsLeftChild) {
                 // The right child of the sibling is red
                 // Rotate left
-                if (isRed(siblingNode.getRight())) {
+                if (siblingNode.getRight() != null && isRed(siblingNode.getRight())) {
+                    // Recolor the sibling
                     siblingNode.setColor(parent.getColor());
+                    // Parents become black
                     parent.setColor(black);
+                    // Right child of sibling is black
                     siblingNode.getRight().setColor(black);
+                    // Rotate left
                     parent = rotateLeft(parent);
                 }
                 // If the left child of the sibling is red
                 // Double Rotation
                 else {
+                    // Left child of the sibling node is black
                     siblingNode.getLeft().setColor(black);
+                    // Sibling is red
                     siblingNode.setColor(red);
+                    // Rotate the sibling node right
                     parent.setRight(rotateRight(siblingNode));
+                    // Rotate parent to the left
                     parent = rotateLeft(parent);
                 }
             }
-            // Same stuff but for right child
+            // Same stuff but for left child
             else {
                 if (isRed(siblingNode.getLeft())) {
                     siblingNode.setColor(parent.getColor());
