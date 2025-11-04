@@ -148,6 +148,7 @@ public class RedBlackTree extends BinaryTree {
     }
 
     // Subroutine that removes the given node
+    //Chat.gpt helped me understand the addition of the rebalancing in the removal method
     private BinNode removeNode(BinNode currentNode, String data) {
         // Base case - found a null node
         if (currentNode == null) {

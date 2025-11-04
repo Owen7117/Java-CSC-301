@@ -104,7 +104,6 @@ public class AVLTree extends BinaryTree {
         return currentNode;
     }
 
-    // Chat.gpt helped me understand and make the right and left rotation
     // Right rotation on the subtree with the root as the currentNode
     private BinNode rotateRight(BinNode currentNode){
         // If the node is null of doesn't have a left child, you cant preform the rotation so return null
@@ -149,7 +148,7 @@ public class AVLTree extends BinaryTree {
         super.setRoot(removeNode(super.getRoot(), data));
     }
 
-    // Chat.gpt helped me understand how the remove function works and that it works recursively
+    // Chat.gpt helped me understand the three cases for removal and that it works recursively
     private BinNode removeNode(BinNode currentNode, String data) {
         // The node is null
         // Base case
